@@ -9,10 +9,10 @@ int main() {
             res += i;
         }
     }
-	cout<<res<<endl;
+    cout<<res<<endl;
 
-	int wait = 0;
-	cin>>wait;
+    int wait = 0;
+    cin>>wait;
 
-	return 0; 
+    return 0; 
 }
