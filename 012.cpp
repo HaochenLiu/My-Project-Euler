@@ -1,3 +1,7 @@
+/*
+http://math.stackexchange.com/questions/295465/how-many-positive-integers-are-factors-of-a-given-number
+*/
+
 #include <iostream>
 #include <math.h>
 #include <unordered_map>
