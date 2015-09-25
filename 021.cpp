@@ -1,3 +1,7 @@
+/*
+http://math.stackexchange.com/questions/163245/finding-sum-of-factors-of-a-number-using-prime-factorization
+*/
+
 #include <iostream>
 #include <math.h>
 #include <unordered_map>
