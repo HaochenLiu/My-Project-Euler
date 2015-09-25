@@ -12,7 +12,7 @@ long long square(long long x) {
     return x * x;
 }
 
-long long power(int x, int y) {
+long long power(long long x, int y) {
     long long lx = x;
     if(y == 1) return lx;
     if(y % 2 == 0) return square(power(lx, y / 2));
