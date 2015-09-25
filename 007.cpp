@@ -11,7 +11,7 @@ int main() {
     flag[1] = false;
     for(int i = 2; i <= sqrt((double)N); i++) {
         for(int j = 2 * i; j < N; j += i) {
-            flag[j] =false;
+            flag[j] = false;
         }
     }
 
