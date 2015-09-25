@@ -41,7 +41,7 @@ int main() {
             if(i < 100) {
                 s[i] = s[i / 10 * 10] + s[i % 10];
             } else {
-                s[i]=s[i / 100] + "hundred";
+                s[i] = s[i / 100] + "hundred";
                 if(i % 100) {
                     s[i] += "and" + s[i % 100];
                 }
