@@ -14,7 +14,8 @@ int func(int n, int a, int b) {
 
 int main() {
     int N = 200001;
-    vector<bool> prime(N, true);
+    bool* prime = new bool[N];
+    memset(prime, true, sizeof(bool) * N);
     prime[0] = false;
     prime[1] = false;
     for(int i = 2; i <= sqrt((double)N); i++) {
