@@ -4,6 +4,7 @@ Let n = 0, we know b has to be positive.
 
 #include <iostream>
 #include <math.h>
+#include <vector>
 
 using namespace std;
 
@@ -13,8 +14,7 @@ int func(int n, int a, int b) {
 
 int main() {
     int N = 200001;
-    bool* prime = new bool[N];
-    memset(prime, true, sizeof(prime));
+    vector<bool> prime(N, true);
     prime[0] = false;
     prime[1] = false;
     for(int i = 2; i <= sqrt((double)N); i++) {
@@ -55,7 +55,6 @@ int main() {
     }
 
     cout<<product<<endl;
-    delete[] prime;
 
     int wait = 0;
     cin>>wait;
