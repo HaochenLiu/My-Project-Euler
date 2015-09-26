@@ -39,7 +39,7 @@ bool isPandigital(int n) {
 int main() {
     int N = 10000000;
     bool* prime = new bool[N];
-    memset(prime, true, sizeof(prime));
+    memset(prime, true, sizeof(bool) * N);
     prime[0] = false;
     prime[1] = false;
     for(int i = 2; i <= sqrt((double)N); i++) {
