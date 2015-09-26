@@ -1,5 +1,5 @@
 /*
-适用于n=100。
+适用于N=100。
 */
 
 #include <iostream>
