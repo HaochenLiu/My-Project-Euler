@@ -2,16 +2,6 @@
 
 using namespace std;
 
-string reverse(string str) {
-    int n = str.size();
-    if(n < 2) return str;
-    for(int i = 0; i < n / 2; i++) {
-        swap(str[i], str[n - 1 - i]);
-    }
-
-    return str;
-}
-
 string itos(int n) {
     string res = "";
     if(n == 0) return "0";
@@ -24,8 +14,8 @@ string itos(int n) {
         res.append(1, '0' + n % 10);
         n /= 10;
     }
-        
-    return reverse(res);
+    reverse(res.begin(), res.end());
+    return res;
 }
 
 string str;
