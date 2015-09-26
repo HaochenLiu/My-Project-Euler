@@ -11,7 +11,7 @@ const int bigNumDigit = 100;
 struct bignum {
     int a[bigNumDigit];
     int point; 
-} num; 
+};
 
 bignum operator+(bignum x, bignum y) {
     bignum z;
