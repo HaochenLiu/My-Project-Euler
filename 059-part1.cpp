@@ -1,5 +1,6 @@
 /*
 三个小写字母的秘钥。之后搜索the。
+发现如果秘钥用god，就会出现20个the。基本确定god为秘钥。
 */
 
 #include <iostream>
