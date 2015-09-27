@@ -298,8 +298,8 @@ Result getWinnerOnePair(Hand hand1, Hand hand2) {
             c22 = i;
         }
         if(exist1[i] == 1) {
-            if(c11_3 == 0) {
-                c11_3 = i;
+            if(c11_1 == 0) {
+                c11_1 = i;
             } else if(c11_2 == 0) {
                 c11_2 = i;
             } else {
@@ -307,8 +307,8 @@ Result getWinnerOnePair(Hand hand1, Hand hand2) {
             }
         }
         if(exist2[i] == 1) {
-            if(c21_3 == 0) {
-                c21_3 = i;
+            if(c21_1 == 0) {
+                c21_1 = i;
             } else if(c21_2 == 0) {
                 c21_2 = i;
             } else {
