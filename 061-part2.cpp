@@ -80,7 +80,7 @@ bool isValid(vector<int>& num, vector<int>& candidate, map<int, int>& Triangle, 
                 if(representive[2][i2] == representive[1][i1]) {
                     continue;
                 }
-				return true;
+                return true;
             }
         }
     }
