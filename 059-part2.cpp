@@ -1,0 +1,65 @@
+/*
+用god做秘钥。得出明文：
+(The Gospel of John, chapter 1) 1 In the beginning the Word already existed. He was with God, and he was God. 2 He was in the beginning with God. 3 He created everything there is. Nothing exists that he didn't make. 4 Life itself was in him, and this life gives light to everyone. 5 The light shines through the darkness, and the darkness can never extinguish it. 6 God sent John the Baptist 7 to tell everyone about the light so that everyone might believe because of his testimony. 8 John himself was not the light; he was only a witness to the light. 9 The one who is the true light, who gives light to everyone, was going to come into the world. 10 But although the world was made through him, the world didn't recognize him when he came. 11 Even in his own land and among his own people, he was not accepted. 12 But to all who believed him and accepted him, he gave the right to become children of God. 13 They are reborn! This is not a physical birth resulting from human passion or plan, this rebirth comes from God.14 So the Word became human and lived here on earth among us. He was full of unfailing love and faithfulness. And we have seen his glory, the glory of the only Son of the Father.
+*/
+
+#include <iostream>
+#include <sstream>
+#include <algorithm>
+#include <math.h>
+#include <string>
+#include <set>
+#include <vector>
+#include <unordered_map>
+
+using namespace std;
+
+vector<string> split(string str, char delimiter) {
+    vector<string> internal;
+    stringstream ss(str);
+    string tok;
+  
+    while(getline(ss, tok, delimiter)) {
+        internal.push_back(tok);
+    }
+  
+    return internal;
+}
+
+int main() {
+    string s;
+    cin>>s;
+    vector<string> str = split(s, ',');
+    int N = str.size();
+    cout<<N<<" letters"<<endl;
+    string text;
+    for(int i = 0; i < N; i++) {
+        int t = stoi(str[i]);
+        text.append(1, (char)t);
+    }
+
+    char k[3];
+    k[0] = 'g';
+    k[1] = 'o';
+    k[2] = 'd';
+
+    string tmpKey;
+    tmpKey.resize(N);
+    for(int i = 0; i < N; i++) {
+        tmpKey[i] = k[i % 3];
+    }
+
+    int res = 0;
+    for(int i = 0; i < N; i++) {
+        tmpKey[i] ^= text[i];
+        res += (int)tmpKey[i];
+    }
+
+    cout<<tmpKey<<endl;
+    cout<<"Result "<<res<<endl;
+
+    int wait = 0;
+    cin>>wait;
+
+    return 0; 
+}
