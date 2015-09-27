@@ -225,7 +225,7 @@ bignum lltobignum(long long n) {
     bignum num;
     memset(num.a, 0, sizeof(num.a));
     num.point = 0;
-    for(int i = 0; i < N; i++) {
+    for(int i = 0; i < bigNumDigit; i++) {
         num.a[i] = n % 10;
         n /= 10;
         if(n == 0) {
