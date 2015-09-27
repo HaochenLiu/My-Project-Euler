@@ -12,7 +12,7 @@ vector<string> split(string str, char delimiter) {
     string tok;
   
     while(getline(ss, tok, delimiter)) {
-    internal.push_back(tok);
+        internal.push_back(tok);
     }
   
     return internal;
