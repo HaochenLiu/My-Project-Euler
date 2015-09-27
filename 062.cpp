@@ -1,5 +1,8 @@
 /*
-得到一个解：8384^3 = 589323567104
+设定N=10000
+得到两个解
+012334566789
+012334556789
 */
 
 #include <iostream>
@@ -38,13 +41,15 @@ int main() {
         string t = lltostr(cube(i));
         sort(t.begin(), t.end());
         m[t]++;
-        if(m[t] == 5) {
-            cout<<t<<endl;
-            cout<<"i "<<i<<" cube(i) "<<cube(i)<<endl;
-            break;
-        }
     }
 
+    unordered_map<string, int>::iterator it;
+    for(it = m.begin(); it != m.end(); it++) {
+        if(it->second == 5) {
+            cout<<it->first<<" "<<it->second<<endl;
+        }
+    }
+    
     cout<<"Result "<<endl;
 
     int wait = 0;
