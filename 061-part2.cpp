@@ -201,7 +201,7 @@ int main() {
     }
 
     for(int i = 0; i < res.size(); i++) {
-        if(isValid(res[i], candidate, Triangle, Square, Pentagonal, Hexagonal, Heptagonal, Heptagonal)) {
+        if(isValid(res[i], candidate, Triangle, Square, Pentagonal, Hexagonal, Octagonal, Heptagonal)) {
             int sum = 0;
             for(int j = 0; j < res[i].size(); j++) {
                 cout<<candidate[res[i][j]]<<endl;
