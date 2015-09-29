@@ -94,6 +94,7 @@ int main() {
             a[i][j].neighbour.push_back((&a[i - 1][j]));
         }
     }
+    
     Node* source = &(a[0][0]);
     Node* target = &(a[N - 1][N - 1]);
 
