@@ -1,4 +1,6 @@
 /*
+Result 427337
+
 DP
 Time: O(n^2)
 Space: O(n^2) can be reduce to O(n)
