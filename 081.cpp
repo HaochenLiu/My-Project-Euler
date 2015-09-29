@@ -28,6 +28,7 @@ vector<string> split(string str, char delimiter) {
   
     return res;
 }
+
 int main() {
     int N = 80;
     vector<vector<int>> a(N, vector<int>(N, 0));
