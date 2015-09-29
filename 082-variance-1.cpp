@@ -54,9 +54,11 @@ int getShortestPath(vector<vector<Node>>& a, Node* source, Node* target) {
         Node* cur = q.front();
         q.pop();
         for(int i = 0; i < cur->neighbour.size(); i++) {
-            if(dist[cur->neighbour[i]->x][cur->neighbour[i]->y] > dist[cur->x][cur->y] + a[cur->neighbour[i]->x][cur->neighbour[i]->y].val) {
-                dist[cur->neighbour[i]->x][cur->neighbour[i]->y] = dist[cur->x][cur->y] + a[cur->neighbour[i]->x][cur->neighbour[i]->y].val;
-                q.push(&(a[cur->neighbour[i]->x][cur->neighbour[i]->y]));
+            int nx = cur->neighbour[i]->x;
+            int ny = cur->neighbour[i]->y;
+            if(dist[nx][ny] > dist[cur->x][cur->y] + a[nx][ny].val) {
+                dist[nx][ny] = dist[cur->x][cur->y] + a[nx][ny].val;
+                q.push(&(a[nx][ny]));
             }
         }
     }
