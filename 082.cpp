@@ -1,4 +1,5 @@
 /*
+DP
 Time: O(n^2)
 Space: O(n^2) can be reduce to O(n)
 http://www.mathblog.dk/project-euler-82-find-the-minimal-path-sum-from-the-left-column-to-the-right-column/
