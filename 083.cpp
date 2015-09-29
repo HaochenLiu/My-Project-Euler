@@ -1,4 +1,6 @@
 /*
+Result 425185
+
 Dijkstra's algorithm
 https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 https://en.wikipedia.org/wiki/Shortest_path_problem
@@ -97,6 +99,7 @@ int main() {
             a[i][j].neighbour.push_back((&a[i - 1][j]));
         }
     }
+
     Node* source = &(a[0][0]);
     Node* target = &(a[N - 1][N - 1]);
 
