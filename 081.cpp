@@ -1,3 +1,8 @@
+/*
+Time: O(n^2)
+Space: O(n^2) can be reduce to O(n)
+*/
+
 #include <iostream>
 #include <math.h>
 #include <string>
