@@ -70,9 +70,9 @@ int getShortestPath(vector<vector<Node>>& a, Node* source, Node* target) {
     for(int i = 0; i < N1; i++) {
         for(int j = 0; j < N2; j++) {
             for(int k = 0; k < a[i][j].neighbour.size(); k++) {
-                int x = a[i][j].neighbour[k]->x;
-                int y = a[i][j].neighbour[k]->y;
-                if(dist[i][j] + a[x][y].val < dist[x][y]) {
+                int nx = a[i][j].neighbour[k]->x;
+                int ny = a[i][j].neighbour[k]->y;
+                if(dist[i][j] + a[nx][ny].val < dist[nx][ny]) {
                     cout<<"Graph contains a negative-weight cycle"<<endl;
                     return INT_MIN;
                 }
