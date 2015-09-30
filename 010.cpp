@@ -21,7 +21,7 @@ int main() {
 			sum += i;
         }
     }
-	cout<<"res = "<<sum<<endl;
+    cout<<"res = "<<sum<<endl;
 
     delete[] flag;
 
