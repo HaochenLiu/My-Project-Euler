@@ -7,8 +7,6 @@ https://zh.wikipedia.org/wiki/%E4%BD%A9%E5%B0%94%E6%96%B9%E7%A8%8B
 #include <math.h>
 #include <string>
 #include <set>
-#include <map>
-#include <unordered_map>
 #include <vector>
 #include <functional>
 #include <numeric>
@@ -26,7 +24,7 @@ int min(int a, int b) {
     return b;
 }
 
-const int bigNumDigit = 200;
+const int bigNumDigit = 800;
 
 struct bignum {
     int a[bigNumDigit];
@@ -63,6 +61,7 @@ bignum operator/(bignum x, int y);
 bignum operator/(int x, bignum y);
 bignum operator&(bignum x, int y);
 bignum sqrt(bignum n);
+bool isSquare(bignum n);
 bool isSquare(int n);
 void simplify(bignum& x);
 bignum max(bignum x, bignum y);
@@ -74,6 +73,9 @@ bignum stobignum(string str);
 string bignumtos(bignum num);
 int getDigitCnt(bignum num);
 int getDigitSum(bignum num);
+bignum fac(int n);
+long long gcd(long long a, long long b);
+long long lcm(long long a, long long b);
 
 bignum stobignum(string str) {
     if(str.empty() || str == "0") return lltobignum(0);
@@ -594,8 +596,21 @@ bignum min(bignum x, bignum y) {
 }
 
 bool isSquare(bignum n) {
-    bignum sr = sqrt(n);
-    return (sr * sr == n);
+    if(n.a[0] == 2) return false;
+    if(n.a[0] == 3) return false;
+    if(n.a[0] == 7) return false;
+    if(n.a[0] == 8) return false;
+    bignum t = sqrt(n);
+    return (t * t == n);
+}
+
+bool isSquare(int n) {
+    if(n % 10 == 2) return false;
+    if(n % 10 == 3) return false;
+    if(n % 10 == 7) return false;
+    if(n % 10 == 8) return false;
+    int t = (int)sqrt((double)n);
+    return (t * t == n);
 }
 
 bignum sqrt(bignum n) {
@@ -622,6 +637,14 @@ bignum sqrt(bignum n) {
     return high;
 }
 
+bignum fac(int n) {
+    bignum t = lltobignum(1);
+    for(int i = 2; i <= n; i++) {
+        t = (t * i);
+    }
+    return t;
+}
+
 long long gcd(long long a, long long b) {
     if(a == b) return a;
     if(a < b) return gcd(b, a);
@@ -629,9 +652,8 @@ long long gcd(long long a, long long b) {
     return gcd(b, a % b);
 }
 
-bool isSquare(int n) {
-    int t = (int)sqrt((double)n);
-    return (t * t == n);
+long long lcm(long long a, long long b) {
+    return (a / gcd(a, b) * b);
 }
 
 bignum getX(int D) {
