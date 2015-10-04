@@ -293,9 +293,21 @@ bignum operator*(bignum x, bignum y) {
     z.point = x.point + y.point;
     z.minus = (x.minus ^ y.minus);
 
-    for(int i = 0; i < bigNumDigit; i++) {
-        for(int j = 0; j <= i; j++) {
-            z.a[i] += x.a[j] * y.a[i - j];
+    int xDigit = getDigitCnt(x) - 1;
+    int yDigit = getDigitCnt(y) - 1;
+    int prodDigit = xDigit + yDigit + 1;
+
+    if(xDigit < yDigit) {
+        for(int i = 0; i < prodDigit; i++) {
+            for(int j = 0; j <= min(i, xDigit); j++) {
+                z.a[i] += x.a[j] * y.a[i - j];
+            }
+        }
+    } else {
+        for(int i = 0; i < prodDigit; i++) {
+            for(int j = 0; j <= min(i, yDigit); j++) {
+                z.a[i] += x.a[i - j] * y.a[j];
+            }
         }
     }
 
