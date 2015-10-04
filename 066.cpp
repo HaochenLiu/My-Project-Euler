@@ -596,6 +596,9 @@ bignum min(bignum x, bignum y) {
 }
 
 bool isSquare(bignum n) {
+    simplify(n);
+    if(n == 0) return true;
+    if(n < 0) return false;
     if(n.a[0] == 2) return false;
     if(n.a[0] == 3) return false;
     if(n.a[0] == 7) return false;
@@ -605,6 +608,8 @@ bool isSquare(bignum n) {
 }
 
 bool isSquare(int n) {
+    if(n == 0) return true;
+    if(n < 0) return false;
     if(n % 10 == 2) return false;
     if(n % 10 == 3) return false;
     if(n % 10 == 7) return false;
