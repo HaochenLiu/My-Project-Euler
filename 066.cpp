@@ -3,7 +3,6 @@
 https://zh.wikipedia.org/wiki/%E4%BD%A9%E5%B0%94%E6%96%B9%E7%A8%8B
 */
 
-
 #include <iostream>
 #include <math.h>
 #include <string>
@@ -17,7 +16,17 @@ https://zh.wikipedia.org/wiki/%E4%BD%A9%E5%B0%94%E6%96%B9%E7%A8%8B
 
 using namespace std;
 
-const int bigNumDigit = 100;
+int max(int a, int b) {
+    if(a > b) return a;
+    return b;
+}
+
+int min(int a, int b) {
+    if(a < b) return a;
+    return b;
+}
+
+const int bigNumDigit = 200;
 
 struct bignum {
     int a[bigNumDigit];
@@ -25,23 +34,37 @@ struct bignum {
     bool minus;
 };
 
-bignum operator/(bignum x, bignum y);
-bignum operator/(bignum x, int y);
 bool operator>=(bignum x, bignum y);
+bool operator>=(bignum x, int y);
+bool operator>=(int x, bignum y);
 bool operator<=(bignum x, bignum y);
+bool operator<=(bignum x, int y);
+bool operator<=(int x, bignum y);
 bool operator==(bignum x, bignum y);
 bool operator==(bignum x, int y);
 bool operator==(int x, bignum y);
 bool operator>(bignum x, bignum y);
+bool operator>(bignum x, int y);
+bool operator>(int x, bignum y);
 bool operator<(bignum x, bignum y);
 bool operator<(bignum x, int y);
 bool operator<(int x, bignum y);
 bignum operator+(bignum x, bignum y);
+bignum operator+(int x, bignum y);
+bignum operator+(bignum x, bignum y);
 bignum operator-(bignum x, bignum y);
 bignum operator-(bignum x, int y);
 bignum operator-(int x, bignum y);
+bignum operator*(bignum x, bignum y);
+bignum operator*(bignum x, int y);
+bignum operator*(int x, bignum y);
+bignum operator/(bignum x, bignum y);
+bignum operator/(bignum x, int y);
+bignum operator/(int x, bignum y);
 bignum operator&(bignum x, int y);
-void checkZeroSign(bignum& x);
+bignum sqrt(bignum n);
+bool isSquare(int n);
+void simplify(bignum& x);
 bignum max(bignum x, bignum y);
 bignum min(bignum x, bignum y);
 bignum square(bignum x);
@@ -57,31 +80,53 @@ bignum stobignum(string str) {
     bignum res = lltobignum(0);
     if(str[0] == '-') {
         res.minus = true;
-        str.erase(0);
+        str.erase(str.begin());
     }
     int n = str.size();
+    for(int i = 0; i < n; i++) {
+        if(str[i] == '.') {
+            res.point = n - 1 - i;
+            str.erase(str.begin() + i);
+            break;
+        }
+    }
+
+    n = str.size();
     for(int i = n - 1; i >= 0; i--) {
         res.a[n - 1 - i] = str[i] - '0';
     }
-    checkZeroSign(res);
+    simplify(res);
     return res;
 }
 
 string bignumtos(bignum num) {
+    simplify(num);
     if(num == 0) return "0";
     string res = "";
-    if(num.minus) {
-        res = "-";
-    }
+    res.resize(bigNumDigit + 2, 0);
+    int pos = 0;
     int i;
     bool flag = false;
     for(i = bigNumDigit - 1; i >= 0; i--) {
-        if(num.a[i] != 0) {
-            flag = true;
+        res[pos] = num.a[i] + '0';
+        pos++;
+        if(num.point != 0 && i == num.point) {
+            res[pos] = '.';
+            pos++;
         }
-        if(flag) {
-            res.append(1, num.a[i] + '0');
-        }
+    }
+    int idx = 0;
+    while(res.size() > 1 && res[idx] == '0' && res[idx + 1] != '.') {
+        idx++;
+    }
+    res = res.substr(idx, res.size() - idx);
+    idx = res.size() - 1;
+    while(res[idx] == 0) {
+        idx--;
+    }
+    res = res.substr(0, idx + 1);
+    if(num.minus) {
+        res.insert(res.begin(), '-');
     }
     return res;
 }
@@ -108,6 +153,11 @@ bignum lltobignum(long long n) {
 }
 
 bignum operator+(bignum x, bignum y) {
+    simplify(x);
+    simplify(y);
+    if(x == lltobignum(0)) return y;
+    if(y == lltobignum(0)) return x;
+
     if(x.point < y.point) {
         int diff = y.point - x.point;
         x.point = y.point;
@@ -142,7 +192,7 @@ bignum operator+(bignum x, bignum y) {
             carry = z.a[i] / 10;
             z.a[i] %= 10;
         }
-        checkZeroSign(z);
+        simplify(z);
         return z;
     } else {
         if(abs(x) == abs(y)) {
@@ -151,16 +201,16 @@ bignum operator+(bignum x, bignum y) {
             bignum z = abs(x) - abs(y);
             z.point = x.point;
             z.minus = x.minus;
+            simplify(z);
             return z;
         } else {
             bignum z = abs(y) - abs(x);
             z.point = y.point;
             z.minus = y.minus;
+            simplify(z);
             return z;
         }
     }
-
-    return z;
 } 
 
 bignum operator+(bignum x, int y) {
@@ -172,6 +222,8 @@ bignum operator+(int x, bignum y) {
 }
 
 bignum operator-(bignum x, bignum y) {
+    simplify(x);
+    simplify(y);
     if(x == lltobignum(0)) return y;
     if(x == y) return lltobignum(0);
     if(x.minus != y.minus) {
@@ -179,9 +231,7 @@ bignum operator-(bignum x, bignum y) {
         z.minus = x.minus;
         return z;
     } else {
-        if(abs(x) == abs(y)) {
-            return lltobignum(0);
-        } else if(abs(x) > abs(y)) {
+        if(abs(x) > abs(y)) {
             int digit = getDigitCnt(y) - 1;
             for(int i = 0; i <= digit; i++) {
                 if(x.a[i] >= y.a[i]) {
@@ -237,7 +287,11 @@ bignum operator-(int x, bignum y) {
 }
 
 bignum operator*(bignum x, bignum y) {
+    simplify(x);
+    simplify(y);
     bignum z = lltobignum(0);
+    z.point = x.point + y.point;
+    z.minus = (x.minus ^ y.minus);
 
     for(int i = 0; i < bigNumDigit; i++) {
         for(int j = 0; j <= i; j++) {
@@ -253,33 +307,33 @@ bignum operator*(bignum x, bignum y) {
         z.a[i] %= 10;
     }
 
+    simplify(z);
     return z;
 } 
 
 bignum operator*(bignum x, int y) {
+    simplify(x);
+    if(x == 0) return x;
     if(y == 0) return lltobignum(0);
-    bignum z = lltobignum(0);
-    if(y < 0) {
-        if(x.minus) {
-            z.minus = false;
-        } else {
-            z.minus = true;
-        }
-    }
+    if(y == 1) return x;
+
+    x.minus ^= (y < 0);
+    y = abs(y);
 
     for(int i = 0; i < bigNumDigit; i++) {
-        z.a[i] = x.a[i] * y;
+        x.a[i] *= y;
     }
 
     int carry = 0;
 
     for(int i = 0; i < bigNumDigit; i++) {
-        z.a[i] = z.a[i] + carry;
-        carry = z.a[i] / 10;
-        z.a[i] %= 10;
+        x.a[i] += carry;
+        carry = x.a[i] / 10;
+        x.a[i] %= 10;
     }
 
-    return z;
+    simplify(x);
+    return x;
 } 
 
 bignum operator*(int x, bignum y) {
@@ -287,16 +341,32 @@ bignum operator*(int x, bignum y) {
 }
 
 bignum operator/(bignum x, bignum y) {
-    if(y == lltobignum(0)) return lltobignum(0);
-    if(y == lltobignum(1)) return x;
-    if(x < y) return lltobignum(0);
+    simplify(x);
+    simplify(y);
+    if(y == 0) return y;
+    if(y == 1) return x;
+    if(abs(x) < abs(y)) return lltobignum(0);
     if(x == y) return lltobignum(1);
+    bool minus = (x.minus ^ y.minus);
+    x.minus = false;
+    y.minus = false;
+
     int digit = getDigitCnt(y) - 1;
     if(y == ((lltobignum(10) & digit))) {
-        for(int i = 0; i + digit < bigNumDigit; i++) {
-            x.a[i] = x.a[i + digit];
-        }
+        x.point += digit;
+        simplify(x);
         return x;
+    }
+
+    if(x.point < y.point) {
+        int diff = y.point - x.point;
+        x.point = y.point;
+        for(int i = bigNumDigit - 1 - diff; i >= 0; i--) {
+            x.a[i + diff] = x.a[i];
+        }
+        for(int i = diff - 1; i >= 0; i--) {
+            x.a[i] = 0;
+        }
     }
 
     bignum res = lltobignum(0);
@@ -310,26 +380,55 @@ bignum operator/(bignum x, bignum y) {
         res = res + small;
         x = x - (small * y);
     }
+    x.point -= y.point;
 
     return res;
 }
 
 bignum operator/(bignum x, int y) {
+    if(y == 0) return lltobignum(0);
+    if(y == 1) return x;
+    if(y == -1) {
+        x.minus = (!x.minus);
+        return x;
+    }
     return (x / lltobignum(y));
+}
+
+bignum operator/(int x, bignum y) {
+    return (lltobignum(x) / y);
 }
 
 bool operator>=(bignum x, bignum y) {
     return (x > y) || (x == y);
 }
 
+bool operator>=(bignum x, int y) {
+    return (x >= lltobignum(y));
+}
+
+bool operator>=(int x, bignum y) {
+    return (lltobignum(x) >= y);
+}
+
 bool operator<=(bignum x, bignum y) {
     return (x < y) || (x == y);
 }
 
+bool operator<=(bignum x, int y) {
+    return (x <= lltobignum(y));
+}
+
+bool operator<=(int x, bignum y) {
+    return (lltobignum(x) <= y);
+}
+
 bool operator>(bignum x, bignum y) {
+    simplify(x);
+    simplify(y);
     if(!x.minus && y.minus) return true;
     if(x.minus && !y.minus) return false;
-    if(x.minus && y.minus) return(abs(x) < abs(y));
+    if(x.minus && y.minus) return(abs(y) > abs(x));
     if(x.point < y.point) {
         int diff = y.point - x.point;
         x.point = y.point;
@@ -361,6 +460,14 @@ bool operator>(bignum x, bignum y) {
     return false;
 } 
 
+bool operator>(bignum x, int y) {
+    return (x > lltobignum(y));
+}
+
+bool operator>(int x, bignum y) {
+    return (lltobignum(x) > y);
+}
+
 bool operator<(bignum x, bignum y) {
     return (y > x);
 }
@@ -374,8 +481,8 @@ bool operator<(int x, bignum y) {
 }
 
 bool operator==(bignum x, bignum y) {
-    checkZeroSign(x);
-    checkZeroSign(y);
+    simplify(x);
+    simplify(y);
     if(x.point != y.point) return false;
     if(x.minus != y.minus) return false;
     for(int i = 0; i < bigNumDigit; i++) {
@@ -394,13 +501,32 @@ bool operator==(int x, bignum y) {
     return (lltobignum(x) == y);
 }
 
-void checkZeroSign(bignum& x) {
+void simplify(bignum& x) {
+    int zeroDigit = 0;
     for(int i = 0; i < bigNumDigit; i++) {
         if(x.a[i] != 0) {
-            return;
+            break;
         }
+        zeroDigit++;
     }
-    x.minus = false;
+    if(zeroDigit == bigNumDigit) {
+        x.minus = false;
+        x.point = 0;
+        return;
+    }
+    
+    int minVal = min(zeroDigit, x.point);
+    if(minVal == 0) {
+        return;
+    }
+
+    x.point -= minVal;
+    for(int i = 0; i < bigNumDigit - minVal; i++) {
+        x.a[i] = x.a[i + minVal];
+    }
+    for(int i = bigNumDigit - minVal; i < bigNumDigit; i++) {
+        x.a[i] = 0;
+    }
     return;
 }
 
@@ -410,11 +536,14 @@ bignum square(bignum x) {
 
 bignum abs(bignum x) {
     x.minus = false;
+    simplify(x);
     return x;
 }
 
 /* x^y */
 bignum operator&(bignum x, int y) {
+    simplify(x);
+    if(x == lltobignum(0)) return x;
     if(y == 0) return lltobignum(1);
     if(y == 1) return x;
     if((y & 1) == 0) {
@@ -453,8 +582,13 @@ bignum min(bignum x, bignum y) {
 }
 
 bool isSquare(bignum n) {
-    if(n == lltobignum(0)) return true;
-    if(n == lltobignum(1)) return true;
+    bignum sr = sqrt(n);
+    return (sr * sr == n);
+}
+
+bignum sqrt(bignum n) {
+    if(n <= 0) return lltobignum(0);
+    if(n == 1) return lltobignum(1);
     int digit = getDigitCnt(n);
     bignum low = lltobignum(1);
     bignum ten = lltobignum(10);
@@ -464,7 +598,7 @@ bool isSquare(bignum n) {
         bignum mid = (low + high) / 2;
         bignum t = mid * mid;
         if(t == n) {
-            return true;
+            return mid;
         }
         if(t < n) {
             low = mid + 1;
@@ -473,7 +607,7 @@ bool isSquare(bignum n) {
         }
     }
 
-    return false;
+    return high;
 }
 
 long long gcd(long long a, long long b) {
