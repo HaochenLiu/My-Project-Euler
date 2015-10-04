@@ -151,6 +151,7 @@ bignum lltobignum(long long n) {
             break;
         }
     }
+    simplify(num);
     return num;
 }
 
@@ -231,6 +232,7 @@ bignum operator-(bignum x, bignum y) {
     if(x.minus != y.minus) {
         bignum z = abs(x) + abs(y);
         z.minus = x.minus;
+        simplify(z);
         return z;
     } else {
         if(abs(x) > abs(y)) {
@@ -251,6 +253,7 @@ bignum operator-(bignum x, bignum y) {
                     x.a[i] = x.a[i] + 10 - y.a[i];
                 }
             }
+            simplify(x);
             return x;
         } else {
             int digit = getDigitCnt(y) - 1;
@@ -270,11 +273,8 @@ bignum operator-(bignum x, bignum y) {
                     y.a[i] = y.a[i] + 10 - x.a[i];
                 }
             }
-            if(y.minus) {
-                y.minus = false;
-            } else {
-                y.minus = true;
-            }
+            y.minus = (!y.minus);
+            simplify(y);
             return y;
         }
     }
@@ -330,6 +330,10 @@ bignum operator*(bignum x, int y) {
     if(x == 0) return x;
     if(y == 0) return lltobignum(0);
     if(y == 1) return x;
+    if(y == -1) {
+        x.minus = (!x.minus);
+        return x;
+    }
 
     x.minus ^= (y < 0);
     y = abs(y);
@@ -395,6 +399,8 @@ bignum operator/(bignum x, bignum y) {
         x = x - (small * y);
     }
     x.point -= y.point;
+
+    simplify(res);
 
     return res;
 }
@@ -621,6 +627,7 @@ bool isSquare(int n) {
 bignum sqrt(bignum n) {
     if(n <= 0) return lltobignum(0);
     if(n == 1) return lltobignum(1);
+    simplify(n);
     int digit = getDigitCnt(n);
     bignum low = lltobignum(1);
     bignum ten = lltobignum(10);
@@ -638,7 +645,7 @@ bignum sqrt(bignum n) {
             high = mid - 1;
         }
     }
-
+    simplify(high);
     return high;
 }
 
