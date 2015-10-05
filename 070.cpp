@@ -113,7 +113,7 @@ int main() {
     }
     cout<<"Result "<<res<<endl;
 
-    int wait = 0;
+    int wait;
     cin>>wait;
 
     return 0; 
