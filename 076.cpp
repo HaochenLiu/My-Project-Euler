@@ -1,3 +1,7 @@
+/*
+http://www.mathblog.dk/project-euler-76-one-hundred-sum-integers/
+*/
+
 #include <algorithm>
 #include <bitset>
 #include <cctype>
