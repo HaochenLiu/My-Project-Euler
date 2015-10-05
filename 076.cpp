@@ -31,7 +31,7 @@ int main() {
     memset(ways, 0, sizeof(int) * (N + 1));
     ways[0] = 1;
  
-    for (int i = 1; i <= N - 1; i++) {
+    for (int i = 1; i < N; i++) {
         for (int j = i; j <= N; j++) {
             ways[j] += ways[j - i];
         }
