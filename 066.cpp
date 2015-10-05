@@ -3,16 +3,33 @@
 https://zh.wikipedia.org/wiki/%E4%BD%A9%E5%B0%94%E6%96%B9%E7%A8%8B
 */
 
-#include <iostream>
-#include <math.h>
-#include <string>
-#include <set>
-#include <vector>
-#include <functional>
-#include <numeric>
 #include <algorithm>
+#include <bitset>
+#include <cctype>
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
+#include <ctime>
+#include <deque>
+#include <fstream>
+#include <functional>
+#include <iostream>
+#include <iomanip>
+#include <list>
+#include <map>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <string>
+#include <stack>
+#include <sstream>
+#include <string.h>
+#include <utility>
+#include <vector>
 
 using namespace std;
+
 
 int max(int a, int b) {
     if(a > b) return a;
@@ -24,14 +41,35 @@ int min(int a, int b) {
     return b;
 }
 
-const int bigNumDigit = 800;
+const int bigNumDigit = 400;
 
-struct bignum {
+class bignum {
+public:
     int a[bigNumDigit];
     int point; 
     bool minus;
+    bignum(int = 0);
+    bignum(const bignum& m);
+    ~bignum();
+    void operator=(bignum m);
+    void operator=(int m);
+    void operator=(string);
+    void operator+=(bignum m);
+    void operator-=(bignum m);
+    void operator*=(bignum m);
+    void operator/=(bignum m);
+    void operator%=(bignum m);
+    void operator+=(int m);
+    void operator-=(int m);
+    void operator*=(int m);
+    void operator/=(int m);
+    void operator%=(int m);
 };
 
+std::ostream& operator<<(std::ostream& result, const bignum& a);
+std::istream& operator>>(std::istream& result, bignum& a);
+bool read(bignum &m);
+void write(bignum m);
 bool operator>=(bignum x, bignum y);
 bool operator>=(bignum x, int y);
 bool operator>=(int x, bignum y);
@@ -60,6 +98,8 @@ bignum operator/(bignum x, bignum y);
 bignum operator/(bignum x, int y);
 bignum operator/(int x, bignum y);
 bignum operator&(bignum x, int y);
+bignum operator%(bignum x, bignum y);
+bignum operator%(bignum x, int y);
 bignum sqrt(bignum n);
 bool isSquare(bignum n);
 bool isSquare(int n);
@@ -76,6 +116,36 @@ int getDigitSum(bignum num);
 bignum fac(int n);
 long long gcd(long long a, long long b);
 long long lcm(long long a, long long b);
+
+bignum::bignum(int n) {
+    memset(a, 0, sizeof(a));
+    point = 0;
+    minus = (n < 0);
+    n = abs(n);
+    if(n == 0) {
+        return;
+    } else if(n < 0) {
+        minus = true;
+        n = -n;
+    }
+    for(int i = 0; i < bigNumDigit; i++) {
+        a[i] = n % 10;
+        n /= 10;
+        if(n == 0) {
+            break;
+        }
+    }
+    return;
+}
+
+bignum::bignum(const bignum& m) {
+    memcpy(a, m.a, sizeof(m.a));
+    minus = m.minus;
+    point = m.point;
+}
+
+bignum::~bignum() {
+}
 
 bignum stobignum(string str) {
     if(str.empty() || str == "0") return lltobignum(0);
@@ -134,24 +204,7 @@ string bignumtos(bignum num) {
 }
 
 bignum lltobignum(long long n) {
-    bignum num;
-    memset(num.a, 0, sizeof(num.a));
-    num.point = 0;
-    num.minus = false;
-    if(n == 0) {
-        return num;
-    } else if(n < 0) {
-        num.minus = true;
-        n = -n;
-    }
-    for(int i = 0; i < bigNumDigit; i++) {
-        num.a[i] = n % 10;
-        n /= 10;
-        if(n == 0) {
-            break;
-        }
-    }
-    simplify(num);
+    bignum num = n;
     return num;
 }
 
@@ -227,7 +280,11 @@ bignum operator+(int x, bignum y) {
 bignum operator-(bignum x, bignum y) {
     simplify(x);
     simplify(y);
-    if(x == lltobignum(0)) return y;
+    if(y == 0) return x;
+    if(x == 0) {
+        y.minus = (!y.minus);
+        return y;
+    }
     if(x == y) return lltobignum(0);
     if(x.minus != y.minus) {
         bignum z = abs(x) + abs(y);
@@ -361,8 +418,13 @@ bignum operator*(int x, bignum y) {
 bignum operator/(bignum x, bignum y) {
     simplify(x);
     simplify(y);
+    if(x == 0) return x;
     if(y == 0) return y;
     if(y == 1) return x;
+    if(y == -1) {
+        x.minus = (!x.minus);
+        return x;
+    }
     if(abs(x) < abs(y)) return lltobignum(0);
     if(x == y) return lltobignum(1);
     bool minus = (x.minus ^ y.minus);
@@ -412,7 +474,21 @@ bignum operator/(bignum x, int y) {
         x.minus = (!x.minus);
         return x;
     }
-    return (x / lltobignum(y));
+    bignum res = 0;
+    res.minus = (x.minus ^ (y < 0));
+    x.minus = false;
+    y = abs(y);
+
+    long long quo = 0;
+    for(int i = bigNumDigit - 1; i >= 0; i--) {
+        quo *= 10;
+        quo += x.a[i];
+        res.a[i] = quo / y;
+        quo %= y;
+    }
+    simplify(res);
+
+    return res;
 }
 
 bignum operator/(int x, bignum y) {
@@ -441,6 +517,20 @@ bool operator<=(bignum x, int y) {
 
 bool operator<=(int x, bignum y) {
     return (lltobignum(x) <= y);
+}
+
+void bignum::operator=(bignum m) {
+    minus = m.minus;
+    point = m.point;
+    memcpy(a, m.a, sizeof(a));
+}
+
+void bignum::operator=(int m) {
+    (*this) = lltobignum(m);
+}
+
+void bignum::operator=(string s) {
+    (*this) = stobignum(s);
 }
 
 bool operator>(bignum x, bignum y) {
@@ -573,6 +663,14 @@ bignum operator&(bignum x, int y) {
     }
 }
 
+bignum operator%(bignum x, bignum y) {
+    return (x - ((x / y) * y));
+}
+
+bignum operator%(bignum x, int y) {
+    return (x - ((x / y) * y));
+}
+
 int getDigitSum(bignum num) {
     int res = 0;
     for(int i = 0; i < bigNumDigit; i++) {
@@ -649,6 +747,41 @@ bignum sqrt(bignum n) {
     return high;
 }
 
+bignum log(int n, bignum p) {
+    bignum mulsqrt;
+    bignum low;
+    bignum high;
+    bignum med;
+    if(n == 1) {
+        mulsqrt = p;    
+    } else if(n > 1) {
+        low = 2;
+        high = 20;
+        while((high & n) < p) {
+            high *= 10;
+        }
+        low = high / 10;
+
+        while(high - low > 1) {
+            med = (high + low) / 2;
+            if((med & n) == p) {
+                return med;
+            } else if((med & n) < p) {
+                low = med;
+            } else {
+                high = med;
+            }
+        }
+        
+        if((high & n) == p) {
+            mulsqrt = high;
+        } else {
+            mulsqrt = low;
+        }
+    }
+    return mulsqrt;
+}
+
 bignum fac(int n) {
     bignum t = lltobignum(1);
     for(int i = 2; i <= n; i++) {
@@ -666,6 +799,75 @@ long long gcd(long long a, long long b) {
 
 long long lcm(long long a, long long b) {
     return (a / gcd(a, b) * b);
+}
+
+bignum gcd(bignum a, bignum b) {
+    return (b == 0) ? a : gcd(b, a % b);
+}
+
+bignum lcm(bignum a, bignum b) {
+    return (a / gcd(a, b) * b);
+}
+
+void bignum::operator+=(bignum m) {
+    (*this) = (*this) + m;
+}
+
+void bignum::operator-=(bignum m) {
+    (*this) = (*this) - m;
+}
+
+void bignum::operator*=(bignum m) {
+    (*this) = (*this) * m;
+}
+
+void bignum::operator/=(bignum m) {
+    (*this) = (*this) / m;
+}
+
+void bignum::operator%=(bignum m) {
+    (*this) = (*this) % m;
+}
+
+void bignum::operator+=(int m) {
+    (*this) = (*this) + m;
+}
+
+void bignum::operator-=(int m) {
+    (*this) = (*this) - m;
+}
+
+void bignum::operator*=(int m) {
+    (*this) = (*this) * m;
+}
+
+void bignum::operator/=(int m) {
+    (*this) = (*this) / m;
+}
+
+void bignum::operator%=(int m) {
+    (*this) = (*this) % m;
+}
+
+std::ostream& operator<<(std::ostream& result, const bignum& a) {
+    write(a);
+    return result;
+}
+
+std::istream& operator>>(std::istream& result, bignum& a) {
+    read(a);
+    return result;
+}
+
+void write(bignum m) {
+    cout<<bignumtos(m);
+}
+
+bool read(bignum &m) {
+    string s;
+    cin>>s;
+    m = stobignum(s);
+    return true;
 }
 
 bignum getX(int D) {
@@ -693,8 +895,8 @@ bignum getX(int D) {
         cur[3] /= g;
         contFrac.push_back(cur[0]);
         prev = cur;
-        bignum n = lltobignum(1);
-        bignum d = lltobignum(contFrac[contFrac.size() - 1]);
+        bignum n = 1;
+        bignum d = contFrac[contFrac.size() - 1];
         for(int i = contFrac.size() - 2; i >= 0; i--) {
             n = n + (contFrac[i] * d);
             swap(n, d);
@@ -706,7 +908,7 @@ bignum getX(int D) {
 }
 
 int main() {
-    bignum maxVal = lltobignum(0);
+    bignum maxVal = 0;
     int maxIdx = 0;
     int N = 1000;
     for(int i = 2; i <= N; i++) {
@@ -720,7 +922,6 @@ int main() {
     }
 
     cout<<"maxIdx "<<maxIdx<<" maxVal "<<bignumtos(maxVal)<<endl;
-
     cout<<"Result "<<endl;
 
     int wait = 0;
