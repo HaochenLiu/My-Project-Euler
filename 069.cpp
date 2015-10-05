@@ -1,5 +1,6 @@
 /*
 https://en.wikipedia.org/wiki/Euler%27s_totient_function
+http://www.algorithmist.com/index.php/Euler's_Phi_function
 */
 
 #include <algorithm>
