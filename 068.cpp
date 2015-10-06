@@ -1,5 +1,5 @@
 /*
-http://www.mathblog.dk/project-euler-78-coin-piles/
+http://www.mathblog.dk/project-euler-68-what-is-the-maximum-16-digit-string-for-a-magic-5-gon-ring/
 */
 
 #include <algorithm>
