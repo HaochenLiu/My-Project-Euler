@@ -42,7 +42,7 @@ int main() {
     fraction thres = itof(3, 7);
     fraction res = itof(0);
     int N = 1000000;
-    for(int d = 100; d <= N; d++) {
+    for(int d = 2; d <= N; d++) {
         int n;
         for(n = (int)(3.0 * d / 7.0); n >= 1; n--) {
             if(itof(n, d) < thres) {
