@@ -32,7 +32,7 @@ namespace PE
         {
             if (IsPrime())
             {
-                Console.Write("prime");
+                Console.Write("Prime");
             }
             else
             {
