@@ -52,7 +52,7 @@ int main() {
     
     long long sum = 0;
     for(int a = 0; a < cnt; a++) {
-        if(a % 10000 == 0) cout<<"a "<<a<<endl;
+        if(a % 10000 == 0) cout<<"calculated "<<a<<endl;
         for(int b = a + 1; b < cnt; b++) {
             long long t = (p[b] + 1) * (p[b] + 1) / (p[a] + 1) - 1;
             if(t >= N) break;
