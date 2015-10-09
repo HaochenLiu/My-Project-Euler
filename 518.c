@@ -2,7 +2,7 @@
 #define false 0
 
 char *prime;
-const int N = 100000000;
+const int N = 100;
 
 char isGeoSeq(long long a, long long b, long long c) {
     return (a * c == b * b);
@@ -30,14 +30,18 @@ int main() {
     prime[0] = false;
     prime[1] = false;
     int sr = sqrt(N);
-    for(int i = 2; i <= sqrt(N); i++) {
-        for(int j = 2 * i; j < N; j += i) {
+    int i;
+    int j;
+    int a;
+    int b;
+    for(i = 2; i <= sqrt(N); i++) {
+        for(j = 2 * i; j < N; j += i) {
             prime[j] = false;
         }
     }
 
     int cnt = 0;
-    for(int i = 0; i < N; i++) {
+    for(i = 0; i < N; i++) {
         if(prime[i]) {
             cnt++;
         }
@@ -45,17 +49,18 @@ int main() {
     printf("prime cnt = %d\n", cnt);
 
     long long* p = malloc(sizeof(long long) * cnt);
-    int j = 0;
-    for(int i = 0; i < N; i++) {
+    
+    j = 0;
+    for(i = 0; i < N; i++) {
         if(prime[i]) {
             p[j++] = i;
         }
     }
     
     long long sum = 0;
-    for(int a = 0; a < cnt; a++) {
+    for(a = 0; a < cnt; a++) {
         if(a % 10000 == 0) printf("calulated %d\n", a);
-        for(int b = a + 1; b < cnt; b++) {
+        for(b = a + 1; b < cnt; b++) {
             long long t = (p[b] + 1) * (p[b] + 1) / (p[a] + 1) - 1;
             if(t >= N) break;
             if((p[b] + 1) * (p[b] + 1) % (p[a] + 1) != 0) continue;
@@ -66,7 +71,7 @@ int main() {
             }
         }
     }
-    printf("sum = %d\n", sum);
+    printf("sum = %lld\n", sum);
 
     return 0; 
 }
