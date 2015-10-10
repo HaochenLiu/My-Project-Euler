@@ -50,7 +50,7 @@ void* ThreadFunc(void* param) {
         }
     }
     ps[i] = sum;
-    printf("TID: %d sum[%d] = %lld\n", thr_self(), i, sum);
+    printf("TID = %d sum[%d] = %lld\n", thr_self(), i, sum);
 }
 
 int main() {
