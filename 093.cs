@@ -6,7 +6,6 @@ namespace euler
 {
     class Problem93
     {
-
         public static void Main(string[] args)
         {
             new Problem93().Bruteforce();
@@ -28,14 +27,12 @@ namespace euler
 
                 while (perm != null)
                 {
-
                     for (int i = 0; i < 4; i++)
                     {
                         for (int j = 0; j < 4; j++)
                         {
                             for (int k = 0; k < 4; k++)
                             {
-
                                 double? number = ope(ope(ope(perm[0], perm[1], i), perm[2], j), perm[3], k);
                                 if (number != null && number == (int)number && number < results.Length && number > 0)
                                     results[(int)number] = true;
@@ -67,7 +64,6 @@ namespace euler
                         best = (int[])comb.Clone();
                         bestcount = l;
                     }
-
 
                     perm = getNextPerm(perm);
                 }
