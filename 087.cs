@@ -41,6 +41,7 @@ namespace PE
 
             return numbers.ToArray();
         }
+
         static void Main(string[] args)
         {
             long[] primes = ESieve(7071);
