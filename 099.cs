@@ -24,7 +24,6 @@ namespace euler
 
             for (int i = 0; i < lines.Length; i++)
             {
-
                 Console.Write(i + ":");
 
                 string[] line = lines[i].Split(',');
@@ -36,7 +35,6 @@ namespace euler
                 BigInteger number = BigInteger.Pow(basenum, exponent);
 
                 Console.Write(", Calculated");
-
 
                 if (number > maxnum)
                 {
@@ -61,7 +59,6 @@ namespace euler
             string[] lines = File.ReadAllLines(filename);
             for (int i = 0; i < lines.Length; i++)
             {
-
                 string[] line = lines[i].Split(',');
                 double basenum = Math.Log(Convert.ToInt32(line[0]));
                 int exponent = Convert.ToInt32(line[1]);
