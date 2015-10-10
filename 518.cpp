@@ -1,20 +1,10 @@
-#include <iostream>
-#include <math.h>
-#include <string>
-#include <set>
-#include <map>
-#include <unordered_map>
-#include <vector>
-#include <functional>
-#include <numeric>
-#include <algorithm>
+#define true 1
+#define false 0
 
-using namespace std;
-
-bool* prime;
+char *prime;
 const int N = 100000000;
 
-bool isGeoSeq(long long a, long long b, long long c) {
+char isGeoSeq(long long a, long long b, long long c) {
     return (a * c == b * b);
 }
 
@@ -23,37 +13,54 @@ int max(int a, int b) {
     return b;
 }
 
+int sqrt(int n) {
+    if(n <= 0) return 0;
+    if(n == 1) return 1;
+    int i = 1;
+    for(i = 1; i <= n; i++) {
+	if(i * i == n) return i;
+	if(i * i > n) return i - 1;
+    }
+    return -1;
+}
+
 int main() {
-    prime = new bool[N];
-    memset(prime, true, sizeof(bool) * N);
+    prime = malloc(N * sizeof(int));
+    memset(prime, true, sizeof(char) * N);
     prime[0] = false;
     prime[1] = false;
-    for(int i = 2; i <= sqrt((double)N); i++) {
-        for(int j = 2 * i; j < N; j += i) {
+    int sr = sqrt(N);
+    int i;
+    int j;
+    int a;
+    int b;
+    for(i = 2; i <= sqrt(N); i++) {
+        for(j = 2 * i; j < N; j += i) {
             prime[j] = false;
         }
     }
 
     int cnt = 0;
-    for(int i = 0; i < N; i++) {
+    for(i = 0; i < N; i++) {
         if(prime[i]) {
             cnt++;
         }
     }
-    cout<<"prime cnt = "<<cnt<<endl;
+    printf("prime cnt = %d\n", cnt);
 
-    long long* p = new long long[cnt];
-    int j = 0;
-    for(int i = 0; i < N; i++) {
+    long long* p = malloc(sizeof(long long) * cnt);
+    
+    j = 0;
+    for(i = 0; i < N; i++) {
         if(prime[i]) {
             p[j++] = i;
         }
     }
     
     long long sum = 0;
-    for(int a = 0; a < cnt; a++) {
-        if(a % 10000 == 0) cout<<"calculated "<<a<<endl;
-        for(int b = a + 1; b < cnt; b++) {
+    for(a = 0; a < cnt; a++) {
+        if(a % 10000 == 0) printf("calulated %d\n", a);
+        for(b = a + 1; b < cnt; b++) {
             long long t = (p[b] + 1) * (p[b] + 1) / (p[a] + 1) - 1;
             if(t >= N) break;
             if((p[b] + 1) * (p[b] + 1) % (p[a] + 1) != 0) continue;
@@ -64,10 +71,7 @@ int main() {
             }
         }
     }
-    cout<<"sum = "<<sum<<endl;
-
-    int wait;
-    cin>>wait;
+    printf("sum = %lld\n", sum);
 
     return 0; 
 }
