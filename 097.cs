@@ -6,7 +6,6 @@ namespace euler
 {
     class Problem097
     {
-
         public static void Main(string[] args)
         {
             new Problem097().BruteForce();
@@ -24,7 +23,5 @@ namespace euler
             Console.WriteLine("The last 10 digits are {0}", result);
             Console.WriteLine("Solution took {0} ms", clock.Elapsed.TotalMilliseconds);
         }
-
-
     }
 }
