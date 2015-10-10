@@ -2,7 +2,7 @@
 #define false 0
 
 char *prime;
-const int N = 100;
+const int N = 5000000;
 
 char isGeoSeq(long long a, long long b, long long c) {
     return (a * c == b * b);
