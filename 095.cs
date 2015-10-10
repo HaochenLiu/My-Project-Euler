@@ -7,7 +7,6 @@ namespace euler
 {
     class Problem095
     {
-
         public static void Main(string[] args)
         {
             new Problem095().Bruteforce();
@@ -111,7 +110,6 @@ namespace euler
 
         public int[] ESieve(int lowerLimit, int upperLimit)
         {
-
             int sieveBound = (int)(upperLimit - 1) / 2;
             int upperSqrt = ((int)Math.Sqrt(upperLimit) - 1) / 2;
 
