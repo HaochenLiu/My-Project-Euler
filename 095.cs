@@ -47,7 +47,6 @@ namespace euler
                     }
                 }
 
-
                 if (!broken)
                 {
                     int smallest = int.MaxValue;
@@ -70,7 +69,6 @@ namespace euler
                 {
                     numbers[chain[j]] = true;
                 }
-
             }
 
             clock.Stop();
@@ -149,8 +147,6 @@ namespace euler
             return numbers.ToArray();
         }
 
-
-
         int[] sumOfFactorsList;
 
         public void Sieve()
@@ -215,7 +211,6 @@ namespace euler
             Console.WriteLine("The smallest number in the intest chain is {0}", result);
             Console.WriteLine("Solution took {0} ms", clock.Elapsed.TotalMilliseconds);
         }
-
 
         private void generateFactors(int limit)
         {
