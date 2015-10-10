@@ -15,7 +15,6 @@ namespace euler
             new Problem098().Hashing(filename);
         }
 
-
         int[] squares;
         public void BruteForce(string filename)
         {
@@ -44,7 +43,6 @@ namespace euler
             {
                 for (int j = i + 1; j < words.Length; j++)
                 {
-
                     if (sorted[i].Length != sorted[j].Length) continue;
                     bool isEqual = true;
                     for (int k = 0; k < sorted[i].Length; k++)
@@ -55,7 +53,6 @@ namespace euler
 
                     if (isEqual)
                     {
-
                         int pairvalue = SquareAnagram(words[i], words[j]);
 
                         if (pairvalue > result)
@@ -128,7 +125,6 @@ namespace euler
 
             for (int i = 0; i < squares.Length; i++)
             {
-
                 int squareLength = squares[i].ToString().Length;
 
                 //Too short, keep looking
@@ -139,7 +135,6 @@ namespace euler
                 if (squareLength > word1.Length)
                     break;
 
-
                 bool match = true;
 
                 int square = squares[i];
@@ -148,7 +143,6 @@ namespace euler
                 //Make a map out of the first word
                 for (int j = w1array.Length - 1; j >= 0; j--)
                 {
-
                     int digit = square % 10;
                     square /= 10;
 
