@@ -51,7 +51,6 @@ namespace euler
             {
                 foreach (int third in doubles)
                 {
-
                     if (scores[i] + third < limit)
                         result++;
                 }
