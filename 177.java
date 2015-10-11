@@ -1,4 +1,4 @@
-public class PE177 {
+public class Main {
 
     public static void main(String[] args) {
         long startTime = System.nanoTime();
@@ -6,9 +6,8 @@ public class PE177 {
         int nonsimilarintegerangledquadrilaterals = 0;
         double[] sin = new double[180], cos = new double[180];
 
-        for (int x = 0; x < 180; sin[x] = Math.sin(Math.toRadians(x)), cos[x] = Math
-                .cos(Math.toRadians(x++)))
-            ;
+        for (int x = 0; x < 180; sin[x] = Math.sin(Math.toRadians(x)), cos[x] = Math.cos(Math.toRadians(x++)));
+
         for (int a = 2; a <= 90; a++)
             for (int b = 1; b < 180 - a; b++) {
 
@@ -17,8 +16,7 @@ public class PE177 {
                     for (int f = d == a ? b : 1; f < Math.min(a, 180 - d); f++) {
 
                         double e = sin[d] / sin[d + f];
-                        double x = Math.toDegrees(Math.atan2(sin[f] * e
-                                - sin[a] * c, cos[f] * e - cos[a] * c));
+                        double x = Math.toDegrees(Math.atan2(sin[f] * e - sin[a] * c, cos[f] * e - cos[a] * c));
                         int y = (int) Math.round(x);
                         int g = 180 - a + y, h = 180 - d - y;
                         if (h < a)
@@ -37,7 +35,6 @@ public class PE177 {
         System.out.println("Answer: " + nonsimilarintegerangledquadrilaterals);
 
         long endTime = System.nanoTime();
-        System.out.printf("Total Time: %.6f seconds\n",
-                ((endTime - startTime) / 1000000000.0));
+        System.out.printf("Total Time: %.6f seconds\n", ((endTime - startTime) / 1000000000.0));
     }
 }
