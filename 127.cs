@@ -42,7 +42,6 @@ namespace euler
             {
                 for (long b = a + 1; b < limit - a; b++)
                 {
-
                     if (radicals[a] * radicals[b] * radicals[a + b] >= a + b) continue;
                     if (GCD(a, b) != 1) continue;
                     result += a + b;
@@ -132,7 +131,6 @@ namespace euler
                 if (this.rad < other.rad) return -1;
                 return this.number > other.number ? 1 : -1;
             }
-
         }
     }
 }
