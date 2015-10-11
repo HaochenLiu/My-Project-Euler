@@ -2,14 +2,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Main {
+    static int N = 18;
 
     public static void main(String[] args) throws Exception {
         ArrayList<HashSet<Rational>> sets = new ArrayList<HashSet<Rational>>();
-        for (int i = 0; i <= 18; ++i) {
+        for (int i = 0; i <= N; ++i) {
             sets.add(new HashSet<Rational>());
         }
         sets.get(1).add(new Rational(1));
-        for (int i = 2; i <= 18; ++i) {
+        for (int i = 2; i <= N; ++i) {
             HashSet<Rational> set = sets.get(i);
             for (int j = 1; j <= i / 2; ++j) {
                 for (Rational r1 : sets.get(j)) {
@@ -21,8 +22,8 @@ public class Main {
             }
             System.out.println(set.size());
         }
-        HashSet<Rational> all = sets.get(18);
-        for (int i = 17; i >= 1; --i) {
+        HashSet<Rational> all = sets.get(N);
+        for (int i = N - 1; i >= 1; --i) {
             all.addAll(sets.get(i));
         }
         System.out.println(all.size());
