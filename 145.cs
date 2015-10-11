@@ -92,7 +92,6 @@ namespace euler
                     case 3:
                         break;
                 }
-
             }
 
             clock.Stop();
