@@ -15,7 +15,6 @@ set<int> square;
 ll ans = 0;
 int c[10] = {};
 
-
 ll combination(){
     ll ret = fact19;
     for (int i = 0; i <= 9; ++i) {
