@@ -7,7 +7,7 @@ namespace euler
     {
         public static void Main(string[] args)
         {
-            new Problem145().Bruteforce();
+            new Problem145().Analytic();
         }
 
         public void Bruteforce()
