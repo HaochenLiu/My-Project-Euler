@@ -1,3 +1,8 @@
+/*
+8916100448256
+24 28 29 30 31 32 33 35 36 43 
+*/
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
