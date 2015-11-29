@@ -18,7 +18,7 @@ int main() {
     long long sum = 0;
     for(int i = 0; i < N; i++) {
         if(flag[i]) {
-			sum += i;
+            sum += i;
         }
     }
     cout<<"res = "<<sum<<endl;
