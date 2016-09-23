@@ -96,6 +96,6 @@ int main() {
         printf("w[%d] = %.8f\n", i, p[(1 << n) - 1][i][0]);
     }
     printf("ans = %.8f\n", f[(1 << n) - 1][0]);
-	  getchar();
+    getchar();
     return 0;
 }
