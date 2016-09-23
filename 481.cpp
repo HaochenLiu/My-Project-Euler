@@ -71,8 +71,8 @@ int main() {
                 }
             }
 
-			for (int i = 0; i < xs.size(); i++) {
-				int v = xs[i];
+            for (int i = 0; i < xs.size(); i++) {
+                int v = xs[i];
                 for (int u = 0; u < n; ++u)
                     if (S >> u & 1)
                         p[S][v][u] = s[u] * p[S ^ (1 << del[S][u])][v][(u + 1) % n];
